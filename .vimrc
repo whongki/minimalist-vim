@@ -1,6 +1,6 @@
 if has('gui_running')
   " 下面两行仅为占位使用；请填入你自己的字体
-  set guifont=DejaVuSansMonoPowerline:h14
+  set guifont=fira_code:h14
   " 不延迟加载菜单（需要放在下面的 source 语句之前）
   let do_syntax_sel_menu = 1
   let do_no_lazyload_menus = 1
@@ -37,6 +37,7 @@ if has('persistent_undo')
   endif
 endif
 
+map <Space> <Leader>
 
 if has('termguicolors') &&
       \($COLORTERM == 'truecolor' || $COLORTERM == '24bit')
@@ -53,6 +54,21 @@ if has('mouse')
   endif
 endif
 
+let g:EasyMotion_do_mapping = 0 " Disable default mappings
+
+" Turn on case-insensitive feature
+let g:EasyMotion_smartcase = 1
+
+" Jump to anywhere you want with minimal keystrokes, with just one key binding.
+" `s{char}{label}`
+"nmap s <Plug>(easymotion-overwin-f)
+nmap <Leader>f <Plug>(easymotion-overwin-f2)
+" JK motions: Line motions
+map <Leader>j <Plug>(easymotion-j)
+map <Leader>k <Plug>(easymotion-k)
+" Gif config
+map  <Leader>/ <Plug>(easymotion-sn)
+" omap / <Plug>(easymotion-tn) operator mode 
 
 
 if !has('gui_running')
@@ -87,7 +103,7 @@ if exists('g:loaded_minpac')
   "call minpac#add('majutsushi/tagbar')
   " 自动加括号去括号
   call minpac#add('tpope/vim-surround')
-  " 撤回树，可以直接看到所有的历史编缉树UndotreeToggle https://github.com/mbbill/undotree
+  " 撤回树，可以直接看到所有的历史编缉树UndotreeToggle 
   call minpac#add('mbbill/undotree')
   " 模糊搜索，使用命令忘了
   call minpac#add('junegunn/fzf', {'do': {-> fzf#install()}})
@@ -111,8 +127,7 @@ if exists('g:loaded_minpac')
  " call minpac#add('adah1972/cscope_maps.vim')
  " call minpac#add('vim-scripts/autoload_cscope.vim')
   call minpac#add('tpope/vim-fugitive')
-
-
+  call minpac#add('easymotion/vim-easymotion')
 endif
 
 if has('eval')
