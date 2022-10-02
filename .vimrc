@@ -15,10 +15,14 @@ let g:airline#extensions#tabline#show_tab_nr = 0
 " 语法高亮
 syntax on
 
+
+let g:sneak#label = 1
+set relativenumber
 " system clipboard would be used as the unnamed clipboard 
 set clipboard=unnamed
 " 关闭vim的提示音
 set noerrorbells
+set smartcase
 set belloff=all
 set enc=utf-8
 source $VIMRUNTIME/vimrc_example.vim
@@ -54,20 +58,20 @@ if has('mouse')
   endif
 endif
 
-let g:EasyMotion_do_mapping = 0 " Disable default mappings
+"let g:EasyMotion_do_mapping = 0 " Disable default mappings
 
 " Turn on case-insensitive feature
-let g:EasyMotion_smartcase = 1
+"let g:EasyMotion_smartcase = 1
 
 " Jump to anywhere you want with minimal keystrokes, with just one key binding.
 " `s{char}{label}`
 "nmap s <Plug>(easymotion-overwin-f)
-nmap <Leader>f <Plug>(easymotion-overwin-f2)
+"nmap <Space>f <Plug>(easymotion-overwin-f2)
 " JK motions: Line motions
-map <Leader>j <Plug>(easymotion-j)
-map <Leader>k <Plug>(easymotion-k)
+"map <Leader><Leader>j <Plug>(easymotion-j)
+"map <Leader><Leader>k <Plug>(easymotion-k)
 " Gif config
-map  <Leader>/ <Plug>(easymotion-sn)
+"map  <Leader>/ <Plug>(easymotion-sn)
 " omap / <Plug>(easymotion-tn) operator mode 
 
 
@@ -106,8 +110,8 @@ if exists('g:loaded_minpac')
   " 撤回树，可以直接看到所有的历史编缉树UndotreeToggle 
   call minpac#add('mbbill/undotree')
   " 模糊搜索，使用命令忘了
-  call minpac#add('junegunn/fzf', {'do': {-> fzf#install()}})
-  call minpac#add('junegunn/fzf.vim')
+  "call minpac#add('junegunn/fzf', {'do': {-> fzf#install()}})
+  " call minpac#add('junegunn/fzf.vim')
   " 用于自动生成ctags，不用自己去打命令了
   "call minpac#add('ludovicchabant/vim-gutentags')
   " 用于在写函数的时候，打左括号的时候直接在下方显示函数原型
@@ -127,7 +131,10 @@ if exists('g:loaded_minpac')
  " call minpac#add('adah1972/cscope_maps.vim')
  " call minpac#add('vim-scripts/autoload_cscope.vim')
   call minpac#add('tpope/vim-fugitive')
-  call minpac#add('easymotion/vim-easymotion')
+  "call minpac#add('neoclide/coc.nvim', {'branch': 'release'})
+  call minpac#add('fatih/vim-go')
+  call minpac#add('justinmk/vim-sneak')
+  call minpac#add('prabirshrestha/vim-lsp')
 endif
 
 if has('eval')
@@ -155,6 +162,7 @@ au FileType c,cpp,objc  setlocal expandtab shiftwidth=4 softtabstop=4 tabstop=4 
 au FileType json        setlocal expandtab shiftwidth=2 softtabstop=2
 au FileType vim         setlocal expandtab shiftwidth=2 softtabstop=2
 au FileType js          setlocal expandtab shiftwidth=4 softtabstop=4
+au FileType go          setlocal expandtab shiftwidth=4 softtabstop=4
 au FileType help        nnoremap <buffer> q <C-W>c
 au BufRead /usr/include/*  call GnuIndent()
 
@@ -217,3 +225,26 @@ function! s:CopyMatches(line1, line2, reg)
     echo 'No hits'
   endif
 endfunction
+
+
+
+" disable vim-go go to definition 
+let g:go_def_mapping_enabled = 0
+" disable all linters as that is taken care of by coc.nvim
+let g:go_diagnostics_enabled = 0
+let g:go_metalinter_enabled = []
+" don't jump to errors after metalinter is invoked
+let g:go_jump_to_error = 0
+" run go imports on file save
+let g:go_fmt_command = "goimports"
+" automatically highlight variable your cursor is on
+let g:go_auto_sameids = 0
+"
+let g:go_highlight_types = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_function_calls = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_extra_types = 1
+let g:go_highlight_build_constraints = 1
+let g:go_highlight_generate_tags = 1"
