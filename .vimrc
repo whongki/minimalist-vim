@@ -22,7 +22,9 @@ set relativenumber
 set clipboard=unnamed
 " 关闭vim的提示音
 set noerrorbells
+set ignorecase
 set smartcase
+
 set belloff=all
 set enc=utf-8
 source $VIMRUNTIME/vimrc_example.vim
@@ -110,8 +112,8 @@ if exists('g:loaded_minpac')
   " 撤回树，可以直接看到所有的历史编缉树UndotreeToggle 
   call minpac#add('mbbill/undotree')
   " 模糊搜索，使用命令忘了
-  "call minpac#add('junegunn/fzf', {'do': {-> fzf#install()}})
-  " call minpac#add('junegunn/fzf.vim')
+  call minpac#add('junegunn/fzf')
+  call minpac#add('junegunn/fzf.vim')
   " 用于自动生成ctags，不用自己去打命令了
   "call minpac#add('ludovicchabant/vim-gutentags')
   " 用于在写函数的时候，打左括号的时候直接在下方显示函数原型
@@ -131,10 +133,10 @@ if exists('g:loaded_minpac')
  " call minpac#add('adah1972/cscope_maps.vim')
  " call minpac#add('vim-scripts/autoload_cscope.vim')
   call minpac#add('tpope/vim-fugitive')
-  "call minpac#add('neoclide/coc.nvim', {'branch': 'release'})
+  call minpac#add('neoclide/coc.nvim', {'branch': 'release'})
   call minpac#add('fatih/vim-go')
   call minpac#add('justinmk/vim-sneak')
-  call minpac#add('prabirshrestha/vim-lsp')
+  "call minpac#add('prabirshrestha/vim-lsp')
 endif
 
 if has('eval')
@@ -248,3 +250,98 @@ let g:go_highlight_operators = 1
 let g:go_highlight_extra_types = 1
 let g:go_highlight_build_constraints = 1
 let g:go_highlight_generate_tags = 1"
+
+
+" TextEdit might fail if hidden is not set.
+set hidden
+
+colorscheme gruvbox
+autocmd ColorScheme * highlight CocErrorFloat guifg=#ffffff
+autocmd ColorScheme * highlight CocInfoFloat guifg=#ffffff
+autocmd ColorScheme * highlight CocWarningFloat guifg=#ffffff
+autocmd ColorScheme * highlight SignColumn guibg=#adadad
+autocmd ColorScheme * highlight CocWarningSign guibg=#ffffff
+
+" Some servers have issues with backup files, see #649.
+set nobackup
+set nowritebackup
+
+" Give more space for displaying messages.
+set cmdheight=2
+
+" Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
+" delays and poor user experience.
+set updatetime=300
+
+" Don't pass messages to |ins-completion-menu|.
+set shortmess+=c
+
+" Only show signcolumn on errors
+set signcolumn=auto
+
+" Use tab for trigger completion with characters ahead and navigate.
+" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-space> to trigger completion.
+if has('nvim')
+  inoremap <silent><expr> <c-space> coc#refresh()
+else
+  inoremap <silent><expr> <c-@> coc#refresh()
+endif
+
+" Make <CR> auto-select the first completion item and notify coc.nvim to
+" format on enter, <cr> could be remapped by other vim plugin
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+" GoTo code navigation.
+
+" Use K to show documentation in preview window.
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  elseif (coc#rpc#ready())
+    call CocActionAsync('doHover')
+  else
+    execute '!' . &keywordprg . " " . expand('<cword>')
+  endif
+endfunction
+
+" Highlight the symbol and its references when holding the cursor.
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+augroup mygroup
+  autocmd!
+  " Setup formatexpr specified filetype(s).
+  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+  " Update signature help on jump placeholder.
+  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+augroup end
+
+" Add (Neo)Vim's native statusline support.
+" NOTE: Please see `:h coc-status` for integrations with external plugins that
+" provide custom statusline: lightline.vim, vim-airline.
+set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+autocmd BufEnter *.go nmap <leader>t  <Plug>(go-test)
+autocmd BufEnter *.go nmap <leader>tt <Plug>(go-test-func)
+autocmd BufEnter *.go nmap <leader>c  <Plug>(go-coverage-toggle)
+autocmd BufEnter *.go nmap <leader>i  <Plug>(go-info)
+autocmd BufEnter *.go nmap <leader>ii  <Plug>(go-implements)
+autocmd BufEnter *.go nmap <leader>ci  <Plug>(go-describe)
+autocmd BufEnter *.go nmap <leader>cc  <Plug>(go-callers)
+nmap <leader>cr <Plug>(coc-references)
+nmap <silent> gd <Plug>(coc-definition)
+nmap <leader>r <Plug>(coc-rename)
