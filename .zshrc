@@ -9,3 +9,4 @@ zstyle :prompt:pure:path color '#5dc8fd'
 source /Users/admin/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 bindkey -v
 export CLICOLOR=1
+source ~/.profile
